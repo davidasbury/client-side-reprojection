@@ -141,6 +141,7 @@
           // use this point to set the center of the view
           // for the specified spatial reference
           const viewSpatialReference = new SpatialReference({
+//            wkid: wkidSelect.value
             wkt: wkidSelect.value
           });
           let centerPoint = {
@@ -210,7 +211,8 @@
   </head>
 
   <body>
-    <div id="viewDiv">
+<!--
+   <div id="viewDiv">
       <div id="loader">
         <img src="https://developers.arcgis.com/javascript/latest/sample-code/client-projection/live/loader.gif" />
       </div>
@@ -218,7 +220,7 @@
         <p>Select a projection</p>
         <select id="projectWKID" class="esri-widget" disabled>
           <option value="8857" selected>Equal Earth Greenwich</option>
-          <option value="'PROJCS["Equal Earth (Bering Strait)",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Equal_Earth"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",11.5],UNIT["Meter",1.0]]'">Equal Earth (Bering Strait)</option>
+          <option value='PROJCS["Equal Earth (Bering Strait)",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Equal_Earth"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",11.5],UNIT["Meter",1.0]]'>Equal Earth (Bering Strait)</option>
           <option value="8858">Equal Earth Americas</option>
           <option value="8859">Equal Earth Asia-Pacific</option>
           <option value="54042">Winkel III</option>
@@ -232,5 +234,30 @@
         </select>
       </div>
     </div>
+  -->
+  
+    <div id="viewDiv">
+      <div id="loader">
+        <img src="https://developers.arcgis.com/javascript/latest/sample-code/client-projection/live/loader.gif" />
+      </div>
+      <div id="projectionDiv" class="esri-widget">
+        <p>Select a projection</p>
+        <select id="projectWKID" class="esri-widget" disabled>
+          <option value='PROJCS["WGS_1984_Equal_Earth_Greenwich",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Equal_Earth"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",0.0],UNIT["Meter",1.0]]' selected>Equal Earth Greenwich</option>
+          <option value='PROJCS["Equal Earth (Bering Strait)",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Equal_Earth"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",11.5],UNIT["Meter",1.0]]'>Equal Earth (Bering Strait)</option>
+          <option value='PROJCS["WGS_1984_Equal_Earth_Americas",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIM EM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Equal_Earth"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-90.0],UNIT["Meter",1.0]]'>Equal Earth Americas</option>
+          <option value='PROJCS["WGS_1984_Equal_Asia_Pacific",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIM EM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Equal_Earth"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",150.0],UNIT["Meter",1.0]]'>Equal Earth Asia-Pacific</option>
+          <option value="54042">Winkel III</option>
+          <option value="54050">World Fuller</option>
+          <option value="54010">World Eckert VI</option>
+          <option value="54021">World Polyconic</option>
+          <option value="54016">World Gall Stereographic</option>
+          <option value="54008">World Sinusoidal</option>
+          <option value="54023">World Loximuthal</option>
+          <option value="54024">World Bonne</option>
+        </select>
+      </div>
+    </div>
   </body>
+
 </html>
