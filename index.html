@@ -58,7 +58,8 @@
 
         // Reproject the data to the projection selected by the user
 
-        const wkidSelect = document.getElementById("projectWKID");
+ //       const wkidSelect = document.getElementById("projectWKID"); //uncomment to use WKID
+        const wkidSelect = document.getElementById("projectWKT"); //uncomment to use WKT
         wkidSelect.addEventListener("change", () => {
           loadingDiv.style.display = "inline";
           createLayer()
@@ -70,7 +71,7 @@
           .then(recreateView)
           .catch(errback);
 
-        function createLayer() {
+          function createLayer() {
           // display projected graphics as a FeatureLayer
           countriesLayer = new GeoJSONLayer({
             title: "Forest area by country",
@@ -110,9 +111,9 @@
               defaultLabel: "No data",
               defaultSymbol: {
                 type: "simple-fill",
-                color: "#fcedcd",
+                color: "#F0F0F0",
                 outline: {
-                  color: [255, 255, 255, 0.1],
+                  color: [0,0,0, 0.1],
                   width: 0.5
                 }
               },
@@ -130,7 +131,7 @@
           });
           return countriesLayer.load();
         }
-
+ 
         /*************************************************************************
          * This function is called whenever user selects a new projection
          * from the projections drop down.
@@ -141,8 +142,8 @@
           // use this point to set the center of the view
           // for the specified spatial reference
           const viewSpatialReference = new SpatialReference({
-//            wkid: wkidSelect.value
-            wkt: wkidSelect.value
+//            wkid: wkidSelect.value    //use this if you use the first viewDiv
+            wkt: wkidSelect.value     //use this if you use the second viewDiv
           });
           let centerPoint = {
             x: 0,
@@ -173,10 +174,10 @@
           view.graphics.add({
             symbol: {
               type: "simple-fill",
-              color: null,
+              color: [0,122,204,0.05],
               outline: {
-                width: 0.5,
-                color: [208, 208, 203, 0.7]
+                width: 0.3,
+                color: [120, 120, 120, 1]
               }
             },
             geometry: {
@@ -191,7 +192,7 @@
             }
           });
 
-          view.ui.add(new Legend({ view: view }), "bottom-left");
+//          view.ui.add(new Legend({ view: view, style: "card" }), "bottom-left"); //uncomment to show legend
 
           view.whenLayerView(countriesLayer).then((layerView) => {
             watchUtils.whenFalseOnce(layerView, "updating", () => {
@@ -211,7 +212,7 @@
   </head>
 
   <body>
-<!--
+<!-- //uncomment this block to use WKID
    <div id="viewDiv">
       <div id="loader">
         <img src="https://developers.arcgis.com/javascript/latest/sample-code/client-projection/live/loader.gif" />
@@ -235,14 +236,14 @@
       </div>
     </div>
   -->
-  
+  <!-- uncomment this block to use WKT -->
     <div id="viewDiv">
       <div id="loader">
         <img src="https://developers.arcgis.com/javascript/latest/sample-code/client-projection/live/loader.gif" />
       </div>
       <div id="projectionDiv" class="esri-widget">
         <p>Select a projection</p>
-        <select id="projectWKID" class="esri-widget" disabled>
+        <select id="projectWKT" class="esri-widget" disabled>
           <option value='PROJCS["WGS_1984_Equal_Earth_Greenwich",
                           GEOGCS["GCS_WGS_1984",
                             DATUM["D_WGS_1984",
@@ -254,7 +255,7 @@
                             PARAMETER["False_Northing",0.0],
                             PARAMETER["Central_Meridian",0.0],
                             UNIT["Meter",1.0]]' 
-                          selected>Equal Earth Greenwich</option>
+                          >Equal Earth Greenwich</option>
           <option value='PROJCS["Equal Earth (Bering Strait)",
                           GEOGCS["GCS_WGS_1984",
                             DATUM["D_WGS_1984",
@@ -266,7 +267,7 @@
                             PARAMETER["False_Northing",0.0],
                             PARAMETER["Central_Meridian",11.5],
                             UNIT["Meter",1.0]]'
-                          >Equal Earth (Bering Strait)</option>
+                          selected>Equal Earth (Bering Strait)</option>
           <option value='PROJCS["WGS_1984_Equal_Earth_Americas",
                           GEOGCS["GCS_WGS_1984",
                             DATUM["D_WGS_1984",
@@ -304,6 +305,32 @@
                             PARAMETER["Standard_Parallel_1",50.467],
                             UNIT["Meter",1.0]]'
                           >Winkel III</option>
+          <option value='PROJCS["World_Goode_Homolosine_Land",
+                          GEOGCS["GCS_WGS_1984",
+                            DATUM["D_WGS_1984",
+                              SPHEROID["WGS_1984",6378137.0,298.257223563]],
+                            PRIMEM["Greenwich",0.0],
+                            UNIT["Degree",0.0174532925199433]],
+                          PROJECTION["Goode_Homolosine"],
+                          PARAMETER["False_Easting",0.0],
+                          PARAMETER["False_Northing",0.0],
+                          PARAMETER["Central_Meridian",0.0],
+                          PARAMETER["Option",1.0],
+                          UNIT["Meter",1.0]]'
+                          >Goode Homolosine (Land)</option>
+          <option value='PROJCS["World_Goode_Homolosine_Ocean",
+                          GEOGCS["GCS_WGS_1984",
+                            DATUM["D_WGS_1984",
+                              SPHEROID["WGS_1984",6378137.0,298.257223563]],
+                            PRIMEM["Greenwich",0.0],
+                            UNIT["Degree",0.0174532925199433]],
+                          PROJECTION["Goode_Homolosine"],
+                          PARAMETER["False_Easting",0.0],
+                          PARAMETER["False_Northing",0.0],
+                          PARAMETER["Central_Meridian",192.0],
+                          PARAMETER["Option",2.0],
+                          UNIT["Meter",1.0]]'
+                          >Goode Homolosine (Ocean)</option>                          
           <option value='PROJCS["World_Fuller",
                           GEOGCS["GCS_WGS_1984",
                             DATUM["D_WGS_1984",
@@ -316,6 +343,22 @@
                           PARAMETER["Option", 0.0],
                           UNIT["Meter",1.0]]'
                           >World Fuller</option>
+          <option value='PROJCS["WGS_1984_Spilhaus_Ocean_Map_in_Square",
+                          GEOGCS["GCS_WGS_1984",
+                            DATUM["D_WGS_1984",
+                              SPHEROID["WGS_1984",6378137.0,298.257223563]],
+                            PRIMEM["Greenwich",0.0],
+                            UNIT["Degree",0.0174532925199433]],
+                          PROJECTION["Adams_Square_II"],
+                          PARAMETER["False_Easting",0.0],
+                          PARAMETER["False_Northing",0.0],
+                          PARAMETER["Scale_Factor",1.0],
+                          PARAMETER["Azimuth",40.17823482],
+                          PARAMETER["Longitude_Of_Center",66.94970198],
+                          PARAMETER["Latitude_Of_Center",-49.56371678],
+                          PARAMETER["XY_Plane_Rotation",45.0],
+                          UNIT["Meter",1.0]]'
+                          >Spilhaus</option>
           <option value='PROJCS["World_Eckert_VI",
                           GEOGCS["GCS_WGS_1984",
                             DATUM["D_WGS_1984",

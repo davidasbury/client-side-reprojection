@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>Client-side projection</title>
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+      #loader {
+        display: inline;
+        z-index: 30;
+        position: absolute;
+        right: 45%;
+        top: 45%;
+      }
+      #projectionDiv {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #ffffff;
+        padding: 10px;
+      }
+    </style>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/4.24/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.24/"></script>
+
+    <script>
+      require([
+        "esri/layers/GeoJSONLayer",
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/geometry/SpatialReference",
+        "esri/core/reactiveUtils"
+    ], (
+        GeoJSONLayer,
+        Map,
+        MapView, 
+        SpatialReference,
+        reactiveUtils
+    ) => {
+        /************************************************************
+         * Create loader 
+         ************************************************************/
+        const loadingDiv = document.getElementById("loader");
+        /************************************************************
+         * Create dropdown for projection selector
+         ************************************************************/
+        const wktSelect = document.getElementById("projectWKT"); 
+        wktSelect.addEventListener("change", () => {
+          loadingDiv.style.display = "inline";
+        });
+        /************************************************************
+         * Create two GeoJSON layers.
+         ************************************************************/
+        const countriesLayer = new GeoJSONLayer({
+            title: "Forest area by country",
+            url: "https://developers.arcgis.com/javascript/latest/sample-code/client-projection/live/percent-forest-area.json",
+            objectIdField: "OBJECTID",
+            definitionExpression: "y2015 IS NOT NULL",           
+            fields: [
+              {
+                name: "OBJECTID",
+                alias: "ObjectID",
+                type: "oid"
+              },
+              {
+                name: "Country",
+                alias: "Country",
+                type: "string"
+              },
+              {
+                name: "y2015",
+                alias: "% forest area (2015)",
+                type: "double"
+              }
+            ],
+            popupTemplate: {
+              title: "{Country}",
+              content: "{expression/per-land-area}",
+              expressionInfos: [
+                {
+                  title: "per-land-area",
+                  name: "per-land-area",
+                  expression:
+                    "IIF(!IsEmpty($feature.y2015), Round($feature.y2015) + '% of the land area in this country is forest.', 'No data')"
+                }
+              ]
+            },
+            renderer: {
+              type: "class-breaks",
+              defaultLabel: "No data",
+              defaultSymbol: {
+                type: "simple-fill",
+                color: "#fcedcd",
+                outline: {
+                  color: [0,0,0, 0.1],
+                  width: 0.5
+                }
+              },
+              visualVariables: [
+                {
+                  type: "color",
+                  field: "y2015",
+                  stops: [
+                    { value: 0, color: "#D0D0CB" },
+                    { value: 50, color: "#4F6704" }
+                  ]
+                }
+              ]
+            }
+        })
+        const backgroundLayer = new GeoJSONLayer({
+            title: "No data areas",
+            url: "https://developers.arcgis.com/javascript/latest/sample-code/client-projection/live/percent-forest-area.json",
+            objectIdField: "OBJECTID",
+            definitionExpression: "y2015 IS NULL",
+            renderer: {
+              type: "simple",
+              symbol: {
+                type: "simple-fill",
+                color: "#F0F0F0",
+                outline: {
+                  color: "#A1A1A1",
+                  width: 0.5
+                }
+              }
+            }
+        });
+        /************************************************************
+         * Creates a new Map instance.
+         ************************************************************/
+        const myMap = new Map({
+ //        basemap: "streets-vector", //uncomment to view basemap
+          layers: [countriesLayer,backgroundLayer]
+        });
+        /************************************************************
+         * Set the Map instance to the map property in a MapView.
+         ************************************************************/
+        const view = new MapView({
+          map: myMap,
+          container: "viewDiv"
+        });
+        /************************************************************
+         * Add a background graphic to display the map extent.
+         ************************************************************/
+        view.graphics.add({
+            symbol: {
+              type: "simple-fill",
+              color: [0,122,204,0.05],
+              outline: {
+                width: 0.3,
+                color: [120, 120, 120, 1]
+              }
+            },
+            geometry: {
+              type: "extent",
+              xmin: -180,
+              xmax: 180,
+              ymin: -90,
+              ymax: 90,
+              // This geometry automatically reprojects
+              // when added to the view
+              spatialReference: SpatialReference.WGS84
+            }
+          });
+        /************************************************************
+         * Enable projection dropdown and stop displaying loader once countriesLayer loads 
+         ************************************************************/        
+        view.whenLayerView(countriesLayer).then((layerView) => {
+            reactiveUtils.when(
+                () => !layerView.updating, 
+                () => {
+              // enable the projection dropdown
+              wktSelect.disabled = false;
+              // stop displaying loader
+              loadingDiv.style.display = "none";
+                },
+                {
+                once: true
+            });
+          });
+
+        /************************************************************
+         * Executes if data retrieval was unsuccessful.
+         ************************************************************/
+        function errback(error) {
+          console.error("Something went wrong. ", error);
+        }
+    });
+    </script>
+  </head>
+
+  <body>
+    <div id="viewDiv"></div>
+        <div id="loader">
+            <img src="https://developers.arcgis.com/javascript/latest/sample-code/client-projection/live/loader.gif" />
+        </div>
+        <div id="projectionDiv" class="esri-widget">
+            <p>Select a projection</p>
+            <select id="projectWKT" class="esri-widget" disabled>
+              <option value='PROJCS["WGS_1984_Equal_Earth_Greenwich",
+                              GEOGCS["GCS_WGS_1984",
+                                DATUM["D_WGS_1984",
+                                  SPHEROID["WGS_1984",6378137.0,298.257223563]],
+                                PRIMEM["Greenwich",0.0],
+                                UNIT["Degree",0.0174532925199433]],
+                              PROJECTION["Equal_Earth"],
+                                PARAMETER["False_Easting",0.0],
+                                PARAMETER["False_Northing",0.0],
+                                PARAMETER["Central_Meridian",0.0],
+                                UNIT["Meter",1.0]]' 
+                              >Equal Earth Greenwich</option>
+              <option value='PROJCS["Equal Earth (Bering Strait)",
+                              GEOGCS["GCS_WGS_1984",
+                                DATUM["D_WGS_1984",
+                                  SPHEROID["WGS_1984",6378137.0,298.257223563]],
+                                PRIMEM["Greenwich",0.0],
+                                UNIT["Degree",0.0174532925199433]],
+                              PROJECTION["Equal_Earth"],
+                                PARAMETER["False_Easting",0.0],
+                                PARAMETER["False_Northing",0.0],
+                                PARAMETER["Central_Meridian",11.5],
+                                UNIT["Meter",1.0]]'
+                              selected>Equal Earth (Bering Strait)</option>
+              <option value='PROJCS["WGS_1984_Equal_Earth_Americas",
+                              GEOGCS["GCS_WGS_1984",
+                                DATUM["D_WGS_1984",
+                                  SPHEROID["WGS_1984",6378137.0,298.257223563]],
+                                PRIMEM["Greenwich",0.0],
+                                UNIT["Degree",0.0174532925199433]],
+                              PROJECTION["Equal_Earth"],
+                                PARAMETER["False_Easting",0.0],
+                                PARAMETER["False_Northing",0.0],
+                                PARAMETER["Central_Meridian",-90.0],
+                                UNIT["Meter",1.0]]'
+                              >Equal Earth Americas</option>
+              <option value='PROJCS["WGS_1984_Equal_Asia_Pacific",
+                              GEOGCS["GCS_WGS_1984",
+                                DATUM["D_WGS_1984",
+                                  SPHEROID["WGS_1984",6378137.0,298.257223563]],
+                                PRIMEM["Greenwich",0.0],
+                                UNIT["Degree",0.0174532925199433]],
+                              PROJECTION["Equal_Earth"],
+                                PARAMETER["False_Easting",0.0],
+                                PARAMETER["False_Northing",0.0],
+                                PARAMETER["Central_Meridian",150.0],
+                                UNIT["Meter",1.0]]'
+                              >Equal Earth Asia-Pacific</option>
+              <option value='PROJCS["World_Winkel_Tripel_NGS",
+                              GEOGCS["GCS_WGS_198 4",
+                                DATUM["D_WGS_1984",
+                                  SPHEROID["WGS_1984",6378137.0,298.257223563]],
+                                PRIMEM["Greenwich",0.0],
+                                UNIT["Degree",0.0174532925199433]],
+                              PROJECTION["Winkel_Tripel"],
+                                PARAMETER["False_Easting",0.0],
+                                PARAMETER["False_Northing",0.0],
+                                PARAMETER["Central_Meridian",0.0],
+                                PARAMETER["Standard_Parallel_1",50.467],
+                                UNIT["Meter",1.0]]'
+                              >Winkel III</option>
+              <option value='PROJCS["World_Goode_Homolosine_Land",
+                              GEOGCS["GCS_WGS_1984",
+                                DATUM["D_WGS_1984",
+                                  SPHEROID["WGS_1984",6378137.0,298.257223563]],
+                                PRIMEM["Greenwich",0.0],
+                                UNIT["Degree",0.0174532925199433]],
+                              PROJECTION["Goode_Homolosine"],
+                              PARAMETER["False_Easting",0.0],
+                              PARAMETER["False_Northing",0.0],
+                              PARAMETER["Central_Meridian",0.0],
+                              PARAMETER["Option",1.0],
+                              UNIT["Meter",1.0]]'
+                              >Goode Homolosine (Land)</option>
+              <option value='PROJCS["World_Goode_Homolosine_Ocean",
+                              GEOGCS["GCS_WGS_1984",
+                                DATUM["D_WGS_1984",
+                                  SPHEROID["WGS_1984",6378137.0,298.257223563]],
+                                PRIMEM["Greenwich",0.0],
+                                UNIT["Degree",0.0174532925199433]],
+                              PROJECTION["Goode_Homolosine"],
+                              PARAMETER["False_Easting",0.0],
+                              PARAMETER["False_Northing",0.0],
+                              PARAMETER["Central_Meridian",192.0],
+                              PARAMETER["Option",2.0],
+                              UNIT["Meter",1.0]]'
+                              >Goode Homolosine (Ocean)</option>                          
+              <option value='PROJCS["World_Fuller",
+                              GEOGCS["GCS_WGS_1984",
+                                DATUM["D_WGS_1984",
+                                  SPHEROID["WG S_1984",6378137.0,298.257223563]],
+                                PRIMEM["Greenwich",0.0],
+                                UNIT["Degree",0.0174532925199433]],
+                              PROJECTION["Fuller"],
+                              PARAMETER["False_Easting",0.0],
+                              PARAMETER["False_Northing",0.0],
+                              PARAMETER["Option", 0.0],
+                              UNIT["Meter",1.0]]'
+                              >World Fuller</option>
+              <option value='PROJCS["WGS_1984_Spilhaus_Ocean_Map_in_Square",
+                              GEOGCS["GCS_WGS_1984",
+                                DATUM["D_WGS_1984",
+                                  SPHEROID["WGS_1984",6378137.0,298.257223563]],
+                                PRIMEM["Greenwich",0.0],
+                                UNIT["Degree",0.0174532925199433]],
+                              PROJECTION["Adams_Square_II"],
+                              PARAMETER["False_Easting",0.0],
+                              PARAMETER["False_Northing",0.0],
+                              PARAMETER["Scale_Factor",1.0],
+                              PARAMETER["Azimuth",40.17823482],
+                              PARAMETER["Longitude_Of_Center",66.94970198],
+                              PARAMETER["Latitude_Of_Center",-49.56371678],
+                              PARAMETER["XY_Plane_Rotation",45.0],
+                              UNIT["Meter",1.0]]'
+                              >Spilhaus</option>
+              <option value='PROJCS["World_Eckert_VI",
+                              GEOGCS["GCS_WGS_1984",
+                                DATUM["D_WGS_1984",
+                                  SPHEROID["WGS_1984",6378137.0,298.257223563]],
+                                PRIMEM["Greenwich",0.0],
+                                UNIT["Degree",0.0174532925199433]],
+                              PROJECTION["Eckert_VI"],
+                              PARAMETER["False_Easting",0.0],
+                              PARAMETER["False_Northing",0.0],
+                              PARAMETER["Central_Meridian",0.0],
+                              UNIT["Meter",1.0]]'
+                              >World Eckert VI</option>
+              <option value='PROJCS["World_Polyconic",
+                              GEOGCS["GCS_WGS_1984",
+                                DATUM["D_WGS_1984",
+                                  SPHEROID["WGS_1984",6378137.0,298.257223563]],
+                                PRIMEM["Greenwich",0.0],
+                                UNIT["Degree",0.0174532925199433]],
+                              PROJECTION["Polyconic"],
+                              PARAMETER["False_Easting",0.0],
+                              PARAMETER["False_Northing",0.0],
+                              PARAMETER["Central_Meridian",0.0],
+                              PARAMETER["Latitude_Of_Origin",0.0],
+                              UNIT["Meter",1.0]]'
+                              >World Polyconic</option>
+              <option value='PROJCS["World_Gall_Stereographic",
+                              GEOGCS["GCS_WGS_1984",
+                                  DATUM["WGS_1984",
+                                      SPHEROID["WGS_1984",6378137,298.257223563]],
+                                  PRIMEM["Greenwich",0],
+                                  UNIT["Degree",0.017453292519943295]],
+                              PROJECTION["Gall_Stereographic"],
+                              PARAMETER["False_Easting",0],
+                              PARAMETER["False_Northing",0],
+                              PARAMETER["Central_Meridian",0],
+                              UNIT["Meter",1]]'
+                              >World Gall Stereographic</option>
+              <option value='PROJCS["World_Sinusoidal",
+                              GEOGCS["GCS_WGS_1984",
+                                  DATUM["WGS_1984",
+                                      SPHEROID["WGS_1984",6378137,298.257223563]],
+                                  PRIMEM["Greenwich",0],
+                                  UNIT["Degree",0.017453292519943295]],
+                              PROJECTION["Sinusoidal"],
+                              PARAMETER["False_Easting",0],
+                              PARAMETER["False_Northing",0],
+                              PARAMETER["Central_Meridian",0],
+                              UNIT["Meter",1]]'
+                              >World Sinusoidal</option>
+              <option value='PROJCS["World_Loximuthal",
+                              GEOGCS["GCS_WGS_1984",
+                                  DATUM["WGS_1984",
+                                      SPHEROID["WGS_1984",6378137,298.257223563]],
+                                  PRIMEM["Greenwich",0],
+                                  UNIT["Degree",0.017453292519943295]],
+                              PROJECTION["Loximuthal"],
+                              PARAMETER["False_Easting",0],
+                              PARAMETER["False_Northing",0],
+                              PARAMETER["Central_Meridian",0],
+                              PARAMETER["Central_Parallel",40],
+                              UNIT["Meter",1]]'
+                              >World Loximuthal</option>
+              <option value='PROJCS["World_Bonne",
+                              GEOGCS["GCS_WGS_1984",
+                                  DATUM["WGS_1984",
+                                      SPHEROID["WGS_1984",6378137,298.257223563]],
+                                  PRIMEM["Greenwich",0],
+                                  UNIT["Degree",0.017453292519943295]],
+                              PROJECTION["Bonne"],
+                              PARAMETER["False_Easting",0],
+                              PARAMETER["False_Northing",0],
+                              PARAMETER["Central_Meridian",0],
+                              PARAMETER["Standard_Parallel_1",60],
+                              UNIT["Meter",1]]'
+                              >World Bonne</option>
+            </select>
+          </div>
+  </body>
+</html>
