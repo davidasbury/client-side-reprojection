@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <title>Client-side projection | Sample | ArcGIS API for JavaScript 4.20</title>
+    <title>Client-side reprojection</title>
     <style>
       html,
       body,
@@ -32,8 +32,8 @@
       }
     </style>
 
-    <link rel="stylesheet" href="https://js.arcgis.com/4.20/esri/themes/light/main.css" />
-    <script src="https://js.arcgis.com/4.20/"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.24/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.24/"></script>
 
     <script>
       require([
@@ -42,7 +42,7 @@
         "esri/request",
         "esri/geometry/SpatialReference",
         "esri/layers/GeoJSONLayer",
-        "esri/core/watchUtils",
+        "esri/core/reactiveUtils",
         "esri/widgets/Legend"
       ], (
         MapView,
@@ -50,7 +50,7 @@
         esriRequest,
         SpatialReference,
         GeoJSONLayer,
-        watchUtils,
+        reactiveUtils,
         Legend
       ) => {
         let view, countriesLayer, wgs84Graphics;
@@ -164,7 +164,7 @@
          * New view and map is created with the spatial reference that user chose
          *************************************************************************/
 
-        function recreateView(layer, layer2) {
+        function recreateView(layer1, layer2) {
           // use this point to set the center of the view
           // for the specified spatial reference
           const viewSpatialReference = new SpatialReference({
@@ -186,7 +186,7 @@
           view = new MapView({
             container: "viewDiv",
             map: new Map({
-              layers: [layer, layer2]
+              layers: [layer1, layer2]
             }),
             highlightOptions: {
               color: "#282828",
@@ -220,11 +220,20 @@
 
 //          view.ui.add(new Legend({ view: view, style: "card" }), "bottom-left"); //uncomment to show legend
 
-          view.whenLayerView(countriesLayer).then((layerView) => {
-            watchUtils.whenFalseOnce(layerView, "updating", () => {
+        /************************************************************
+         * Enable projection dropdown and stop displaying loader once layer loads 
+         ************************************************************/        
+         view.whenLayerView(layer1).then((layerView) => {
+            reactiveUtils.when(
+                () => !layerView.updating, 
+                () => {
               // enable the projection dropdown
               wkidSelect.disabled = false;
+              // stop displaying loader
               loadingDiv.style.display = "none";
+                },
+                {
+                once: true
             });
           });
         }
