@@ -34,13 +34,13 @@
 
     <script>
       require([
-        "esri/layers/GeoJSONLayer",
+        "esri/layers/FeatureLayer",
         "esri/Map",
         "esri/views/MapView",
         "esri/geometry/SpatialReference",
         "esri/core/reactiveUtils"
     ], (
-        GeoJSONLayer,
+        FeatureLayer,
         Map,
         MapView, 
         SpatialReference,
@@ -58,124 +58,22 @@
           loadingDiv.style.display = "inline";
         });
         /************************************************************
-         * Create two GeoJSON layers.
+         * Create two feature layers.
          ************************************************************/
-        const countriesLayer = new GeoJSONLayer({
+         const countriesLayer = new FeatureLayer({
             title: "World countries",
-            url: "https://raw.githubusercontent.com/davidasbury/client-side-reprojection/master/World_Countries_Generalized_with_tiny_countries_as_squares.geojson",
-            objectIdField: "OBJECTID_1",
-            definitionExpression: "Tiny_Country <> 1 OR Tiny_Country IS NOT NULL",
-            renderer: {
-              type: "simple",
-              symbol: {
-                type: "simple-fill",
-                color: "#F0F0F0",
-                outline: {
-                  color: "#A1A1A1",
-                  width: 0.5
-                }
-              }
-            }
-        })
-        const backgroundLayer = new GeoJSONLayer({
-            title: "No data areas",
-            url: "https://raw.githubusercontent.com/davidasbury/client-side-reprojection/master/World_Countries_Generalized_with_tiny_countries_as_squares.geojson",
-            objectIdField: "OBJECTID",
-            definitionExpression: "Tiny_Country IS NULL",
-            renderer: {
-              type: "simple",
-              symbol: {
-                type: "simple-fill",
-                color: "#F0F0F0",
-                outline: {
-                  color: "#A1A1A1",
-                  width: 0
-                }
-              }
-            }
+            url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_tiny_squares/FeatureServer/26"
         });
-         /*       const countriesLayer = new GeoJSONLayer({
-            title: "Forest area by country",
-            url: "https://developers.arcgis.com/javascript/latest/sample-code/client-projection/live/percent-forest-area.json",
-            objectIdField: "OBJECTID",
-            definitionExpression: "y2015 IS NOT NULL",           
-            fields: [
-              {
-                name: "OBJECTID",
-                alias: "ObjectID",
-                type: "oid"
-              },
-              {
-                name: "Country",
-                alias: "Country",
-                type: "string"
-              },
-              {
-                name: "y2015",
-                alias: "% forest area (2015)",
-                type: "double"
-              }
-            ],
-            popupTemplate: {
-              title: "{Country}",
-              content: "{expression/per-land-area}",
-              expressionInfos: [
-                {
-                  title: "per-land-area",
-                  name: "per-land-area",
-                  expression:
-                    "IIF(!IsEmpty($feature.y2015), Round($feature.y2015) + '% of the land area in this country is forest.', 'No data')"
-                }
-              ]
-            },
-            renderer: {
-              type: "class-breaks",
-              defaultLabel: "No data",
-              defaultSymbol: {
-                type: "simple-fill",
-                color: "#fcedcd",
-                outline: {
-                  color: [0,0,0, 0.1],
-                  width: 0.5
-                }
-              },
-              visualVariables: [
-                {
-                  type: "color",
-                  field: "y2015",
-                  stops: [
-                    { value: 0, color: "#D0D0CB" },
-                    { value: 50, color: "#4F6704" }
-                  ]
-                }
-              ]
-            }
+        const backgroundLayer = new FeatureLayer({
+            title:"Background countries",
+            url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1"
         })
- 
-        const backgroundLayer = new GeoJSONLayer({
-            title: "No data areas",
-            url: "https://developers.arcgis.com/javascript/latest/sample-code/client-projection/live/percent-forest-area.json",
-            objectIdField: "OBJECTID",
-            definitionExpression: "y2015 IS NULL",
-            renderer: {
-              type: "simple",
-              symbol: {
-                type: "simple-fill",
-                color: "#F0F0F0",
-                outline: {
-                  color: "#A1A1A1",
-                  width: 0
-                }
-              }
-            }
-        });
- */
         /************************************************************
          * Creates a new Map instance.
          ************************************************************/
         const myMap = new Map({
  //        basemap: "streets-vector", //uncomment to view basemap
-          layers: [backgroundLayer,countriesLayer]
+          layers: [countriesLayer,backgroundLayer]
         });
         /************************************************************
          * Set the Map instance to the map property in a MapView.
