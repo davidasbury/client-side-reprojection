@@ -61,6 +61,40 @@
          * Create two GeoJSON layers.
          ************************************************************/
         const countriesLayer = new GeoJSONLayer({
+            title: "World countries",
+            url: "https://raw.githubusercontent.com/davidasbury/client-side-reprojection/master/World_Countries_Generalized_with_tiny_countries_as_squares.geojson",
+            objectIdField: "OBJECTID_1",
+            definitionExpression: "Tiny_Country <> 1 OR Tiny_Country IS NOT NULL",
+            renderer: {
+              type: "simple",
+              symbol: {
+                type: "simple-fill",
+                color: "#F0F0F0",
+                outline: {
+                  color: "#A1A1A1",
+                  width: 0.5
+                }
+              }
+            }
+        })
+        const backgroundLayer = new GeoJSONLayer({
+            title: "No data areas",
+            url: "https://raw.githubusercontent.com/davidasbury/client-side-reprojection/master/World_Countries_Generalized_with_tiny_countries_as_squares.geojson",
+            objectIdField: "OBJECTID",
+            definitionExpression: "Tiny_Country IS NULL",
+            renderer: {
+              type: "simple",
+              symbol: {
+                type: "simple-fill",
+                color: "#F0F0F0",
+                outline: {
+                  color: "#A1A1A1",
+                  width: 0
+                }
+              }
+            }
+        });
+         /*       const countriesLayer = new GeoJSONLayer({
             title: "Forest area by country",
             url: "https://developers.arcgis.com/javascript/latest/sample-code/client-projection/live/percent-forest-area.json",
             objectIdField: "OBJECTID",
@@ -117,6 +151,7 @@
               ]
             }
         })
+ 
         const backgroundLayer = new GeoJSONLayer({
             title: "No data areas",
             url: "https://developers.arcgis.com/javascript/latest/sample-code/client-projection/live/percent-forest-area.json",
@@ -129,17 +164,18 @@
                 color: "#F0F0F0",
                 outline: {
                   color: "#A1A1A1",
-                  width: 0.5
+                  width: 0
                 }
               }
             }
         });
+ */
         /************************************************************
          * Creates a new Map instance.
          ************************************************************/
         const myMap = new Map({
  //        basemap: "streets-vector", //uncomment to view basemap
-          layers: [countriesLayer,backgroundLayer]
+          layers: [backgroundLayer,countriesLayer]
         });
         /************************************************************
          * Set the Map instance to the map property in a MapView.
