@@ -69,16 +69,16 @@
             url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1"
         });
         /************************************************************
-         * Creates a spatial reference from the dropdown
-         ************************************************************/
+         * Creates a new spatial reference from the dropdown options
+         ************************************************************/ 
         const viewSpatialReference = new SpatialReference({
-            wkt: wktSelect.value     //use this to set the sr
-          });
-          let centerPoint = {
-            x: 0,
-            y: 0,
-            spatialReference: viewSpatialReference
-          };
+           wkt: wktSelect.value     //use this to set the spatial reference
+         });
+         let centerPoint = {
+           x: wktSelect.x, //ensure there are both x: and y: values along with the WKT string
+           y: wktSelect.y,
+           spatialReference: viewSpatialReference
+         };
         /************************************************************
          * Creates a new Map instance.
          ************************************************************/
@@ -175,7 +175,7 @@
                                 PARAMETER["False_Northing",0.0],
                                 PARAMETER["Central_Meridian",11.5],
                                 UNIT["Meter",1.0]]'
-                              selected>Equal Earth (Bering Strait)</option>
+                              x="0" y="0" selected></option>Equal Earth (Bering Strait)</option>
               <option value='PROJCS["WGS_1984_Equal_Earth_Americas",
                               GEOGCS["GCS_WGS_1984",
                                 DATUM["D_WGS_1984",
