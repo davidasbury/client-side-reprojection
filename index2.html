@@ -67,7 +67,18 @@
         const backgroundLayer = new FeatureLayer({
             title:"Background countries",
             url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1"
-        })
+        });
+        /************************************************************
+         * Creates a spatial reference from the dropdown
+         ************************************************************/
+        const viewSpatialReference = new SpatialReference({
+            wkt: wktSelect.value     //use this to set the sr
+          });
+          let centerPoint = {
+            x: 0,
+            y: 0,
+            spatialReference: viewSpatialReference
+          };
         /************************************************************
          * Creates a new Map instance.
          ************************************************************/
@@ -80,7 +91,8 @@
          ************************************************************/
         const view = new MapView({
           map: myMap,
-          container: "viewDiv"
+          container: "viewDiv",
+          spatialReference: viewSpatialReference
         });
         /************************************************************
          * Add a background graphic to display the map extent.
