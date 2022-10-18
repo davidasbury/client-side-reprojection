@@ -60,29 +60,41 @@
 
  //       const wkidSelect = document.getElementById("projectWKID"); //uncomment to use WKID
         const wkidSelect = document.getElementById("projectWKT"); //uncomment to use WKT
-        
+
         wkidSelect.addEventListener("change", () => {
           loadingDiv.style.display = "inline";
-          const layer = createLayer();
-          layer.load()
+          const layer1 = createLayer();
+          layer1.load()
             .then(
-              function(layer) {
-                recreateView(layer)
+              function(layer1) {
+
+                const layer2 = new GeoJSONLayer(
+                {
+                  url: "https://developers.arcgis.com/javascript/latest/sample-code/client-projection/live/percent-forest-area.json",
+                  definitionExpression: "Country = 'Brazil'"
+                }
+                );
+                recreateView(layer1, layer2);
               }
             )
             .catch(errback);
         });
 
-          const layer = createLayer();
-          layer.load()
-          .then(
-            function(layer) {
-              recreateView(layer)
-            }
-          )
-          .catch(errback);
-
-
+        const layer1 = createLayer();
+        layer1.load()
+        .then(
+          function(layer1) {
+            const layer2 = new GeoJSONLayer(
+              {
+              url: "https://developers.arcgis.com/javascript/latest/sample-code/client-projection/live/percent-forest-area.json",
+              definitionExpression: "Country = 'Brazil'"
+              }
+            );
+            recreateView(layer1, layer2);
+          }
+        )
+        .catch(errback);
+        
 
           function createLayer() {
           // display projected graphics as a FeatureLayer
@@ -144,14 +156,15 @@
           });
           return countriesLayer;
         }
- 
+
+
         /*************************************************************************
          * This function is called whenever user selects a new projection
          * from the projections drop down.
          * New view and map is created with the spatial reference that user chose
          *************************************************************************/
 
-        function recreateView(layer) {
+        function recreateView(layer, layer2) {
           // use this point to set the center of the view
           // for the specified spatial reference
           const viewSpatialReference = new SpatialReference({
@@ -173,7 +186,7 @@
           view = new MapView({
             container: "viewDiv",
             map: new Map({
-              layers: [layer]
+              layers: [layer, layer2]
             }),
             highlightOptions: {
               color: "#282828",
