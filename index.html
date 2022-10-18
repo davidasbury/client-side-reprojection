@@ -60,16 +60,29 @@
 
  //       const wkidSelect = document.getElementById("projectWKID"); //uncomment to use WKID
         const wkidSelect = document.getElementById("projectWKT"); //uncomment to use WKT
+        
         wkidSelect.addEventListener("change", () => {
           loadingDiv.style.display = "inline";
-          createLayer()
-            .then(recreateView)
+          const layer = createLayer();
+          layer.load()
+            .then(
+              function(layer) {
+                recreateView(layer)
+              }
+            )
             .catch(errback);
         });
 
-          createLayer()
-          .then(recreateView)
+          const layer = createLayer();
+          layer.load()
+          .then(
+            function(layer) {
+              recreateView(layer)
+            }
+          )
           .catch(errback);
+
+
 
           function createLayer() {
           // display projected graphics as a FeatureLayer
@@ -129,7 +142,7 @@
               ]
             }
           });
-          return countriesLayer.load();
+          return countriesLayer;
         }
  
         /*************************************************************************
