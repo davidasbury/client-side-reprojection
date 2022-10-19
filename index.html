@@ -65,47 +65,49 @@
 
         wktSelect.addEventListener("change", () => {
           loadingDiv.style.display = "inline";
-        /************************************************************
-         * Create two layers.
-         ************************************************************/  
-          const layer1 = createLayer();
-          layer1.load()
-            .then(
-              function(layer1) {
-
+         /************************************************************
+         * Function runs when dropdown is changed
+         ************************************************************/ 
+        const layer1 = createLayer();
+        layer1.load()
+          .then(function(layer1) {
                 const layer2 = new FeatureLayer(
-                {
-                  url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_tiny_squares/FeatureServer/26",
-   
-                }
+                  {
+                    title:"Background countries",
+                    url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1",
+                    
+                  }
                 );
-                recreateView(layer1, layer2);
+                createView(layer1, layer2);
               }
             )
             .catch(errback);
         });
-
+         /************************************************************
+         * Function runs on first load
+         ************************************************************/ 
         const layer1 = createLayer();
         layer1.load()
-        .then(
-          function(layer1) {
-            const layer2 = new FeatureLayer(
-              {
-              title:"Background countries",
-              url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1"
+          .then(function(layer1) {
+              const layer2 = new FeatureLayer(
+                {
+                title:"Background countries",
+                url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1"
 
-              }
-            );
-            recreateView(layer1, layer2);
-          }
-        )
-        .catch(errback);
+                }
+              );
+              createView(layer1, layer2);
+            }
+          )
+          .catch(errback);
         
-
+        /************************************************************
+         * Create an operational layer
+         ************************************************************/ 
           function createLayer() {
           // display projected graphics as a FeatureLayer
           countriesLayer = new FeatureLayer({
-            title: "World Countries",
+            title: "World countries",
             url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_tiny_squares/FeatureServer/26",
  /*           objectIdField: "OBJECTID",
             fields: [
@@ -162,15 +164,13 @@
           });
           return countriesLayer;
         }
-
-
         /*************************************************************************
-         * This function is called whenever user selects a new projection
-         * from the projections drop down.
-         * New view and map is created with the spatial reference that user chose
+         * This function is called at first load and whenever the user selects a 
+         * new projection from the projections drop down.
+         * New view and map is created with the spatial reference that user chose.
          *************************************************************************/
 
-        function recreateView(layer1, layer2) {
+        function createView(layer1, layer2) {
         /************************************************************
          * Creates a new spatial reference from the dropdown options
          ************************************************************/ 
@@ -227,7 +227,8 @@
               spatialReference: SpatialReference.WGS84
             }
           });
-        /************************************************************
+        
+          /************************************************************
          * Show or hide the legend by uncommenting/commenting this line 
          ************************************************************/ 
 //          view.ui.add(new Legend({ view: view, style: "card" }), "bottom-left"); //uncomment to show legend
