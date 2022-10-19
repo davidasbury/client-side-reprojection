@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <title>Client-side reprojection</title>
+    <title>Client-side reprojection using WKT projection strings</title>
     <style>
       html,
       body,
@@ -39,30 +39,35 @@
       require([
         "esri/views/MapView",
         "esri/Map",
-        "esri/request",
         "esri/geometry/SpatialReference",
         "esri/layers/GeoJSONLayer",
+        "esri/layers/FeatureLayer",
         "esri/core/reactiveUtils",
         "esri/widgets/Legend"
       ], (
         MapView,
         Map,
-        esriRequest,
         SpatialReference,
         GeoJSONLayer,
+        FeatureLayer,
         reactiveUtils,
         Legend
       ) => {
-        let view, countriesLayer, wgs84Graphics;
+        let view, countriesLayer;
+        /************************************************************
+         * Create loader 
+         ************************************************************/
         const loadingDiv = document.getElementById("loader");
+        /************************************************************
+         * Create dropdown for projection selector
+         ************************************************************/
+        const wktSelect = document.getElementById("projectWKT"); 
 
-        // Reproject the data to the projection selected by the user
-
- //       const wkidSelect = document.getElementById("projectWKID"); //uncomment to use WKID
-        const wkidSelect = document.getElementById("projectWKT"); //uncomment to use WKT
-
-        wkidSelect.addEventListener("change", () => {
+        wktSelect.addEventListener("change", () => {
           loadingDiv.style.display = "inline";
+        /************************************************************
+         * Create two layers.
+         ************************************************************/  
           const layer1 = createLayer();
           layer1.load()
             .then(
@@ -165,11 +170,11 @@
          *************************************************************************/
 
         function recreateView(layer1, layer2) {
-          // use this point to set the center of the view
-          // for the specified spatial reference
+        /************************************************************
+         * Creates a new spatial reference from the dropdown options
+         ************************************************************/ 
           const viewSpatialReference = new SpatialReference({
-//            wkid: wkidSelect.value    //use this if you use the first viewDiv
-            wkt: wkidSelect.value     //use this if you use the second viewDiv
+            wkt: wktSelect.value    
           });
           let centerPoint = {
             x: 0,
@@ -182,7 +187,9 @@
             view.container = null;
             view.map = null;
           }
-
+        /************************************************************
+         * Creates a new MapView with a new map 
+         *************************************************************/
           view = new MapView({
             container: "viewDiv",
             map: new Map({
@@ -196,7 +203,9 @@
             center: centerPoint,
             scale: 166418924
           });
-
+        /************************************************************
+         * Add a background graphic to display the map extent.
+         ************************************************************/
           view.graphics.add({
             symbol: {
               type: "simple-fill",
@@ -217,7 +226,9 @@
               spatialReference: SpatialReference.WGS84
             }
           });
-
+        /************************************************************
+         * Show or hide the legend by uncommenting/commenting this line 
+         ************************************************************/ 
 //          view.ui.add(new Legend({ view: view, style: "card" }), "bottom-left"); //uncomment to show legend
 
         /************************************************************
@@ -228,7 +239,7 @@
                 () => !layerView.updating, 
                 () => {
               // enable the projection dropdown
-              wkidSelect.disabled = false;
+              wktSelect.disabled = false;
               // stop displaying loader
               loadingDiv.style.display = "none";
                 },
@@ -238,7 +249,9 @@
           });
         }
 
-        // Executes if data retrieval was unsuccessful.
+        /************************************************************
+         * Executes if data retrieval was unsuccessful.
+         ************************************************************/
         function errback(error) {
           console.error("something went wrong. ", error);
         }
@@ -247,31 +260,6 @@
   </head>
 
   <body>
-<!-- //uncomment this block to use WKID
-   <div id="viewDiv">
-      <div id="loader">
-        <img src="https://developers.arcgis.com/javascript/latest/sample-code/client-projection/live/loader.gif" />
-      </div>
-      <div id="projectionDiv" class="esri-widget">
-        <p>Select a projection</p>
-        <select id="projectWKID" class="esri-widget" disabled>
-          <option value="8857" selected>Equal Earth Greenwich</option>
-          <option value='PROJCS["Equal Earth (Bering Strait)",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Equal_Earth"],PARAMETER["False_Easting",0.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",11.5],UNIT["Meter",1.0]]'>Equal Earth (Bering Strait)</option>
-          <option value="8858">Equal Earth Americas</option>
-          <option value="8859">Equal Earth Asia-Pacific</option>
-          <option value="54042">Winkel III</option>
-          <option value="54050">World Fuller</option>
-          <option value="54010">World Eckert VI</option>
-          <option value="54021">World Polyconic</option>
-          <option value="54016">World Gall Stereographic</option>
-          <option value="54008">World Sinusoidal</option>
-          <option value="54023">World Loximuthal</option>
-          <option value="54024">World Bonne</option>
-        </select>
-      </div>
-    </div>
-  -->
-  <!-- uncomment this block to use WKT -->
     <div id="viewDiv">
       <div id="loader">
         <img src="https://developers.arcgis.com/javascript/latest/sample-code/client-projection/live/loader.gif" />
