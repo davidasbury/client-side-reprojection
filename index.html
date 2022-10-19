@@ -73,10 +73,10 @@
             .then(
               function(layer1) {
 
-                const layer2 = new GeoJSONLayer(
+                const layer2 = new FeatureLayer(
                 {
-                  url: "https://developers.arcgis.com/javascript/latest/sample-code/client-projection/live/percent-forest-area.json",
-                  definitionExpression: "Country = 'Brazil'"
+                  url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_tiny_squares/FeatureServer/26",
+   
                 }
                 );
                 recreateView(layer1, layer2);
@@ -89,10 +89,11 @@
         layer1.load()
         .then(
           function(layer1) {
-            const layer2 = new GeoJSONLayer(
+            const layer2 = new FeatureLayer(
               {
-              url: "https://developers.arcgis.com/javascript/latest/sample-code/client-projection/live/percent-forest-area.json",
-              definitionExpression: "Country = 'Brazil'"
+              title:"Background countries",
+              url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1"
+
               }
             );
             recreateView(layer1, layer2);
@@ -103,10 +104,10 @@
 
           function createLayer() {
           // display projected graphics as a FeatureLayer
-          countriesLayer = new GeoJSONLayer({
-            title: "Forest area by country",
-            url: "https://developers.arcgis.com/javascript/latest/sample-code/client-projection/live/percent-forest-area.json",
-            objectIdField: "OBJECTID",
+          countriesLayer = new FeatureLayer({
+            title: "World Countries",
+            url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_tiny_squares/FeatureServer/26",
+ /*           objectIdField: "OBJECTID",
             fields: [
               {
                 name: "OBJECTID",
@@ -157,7 +158,7 @@
                   ]
                 }
               ]
-            }
+            } */
           });
           return countriesLayer;
         }
