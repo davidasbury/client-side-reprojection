@@ -109,58 +109,11 @@
           let countriesLayer = new FeatureLayer({
             title: "Countries",
             url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_tiny_squares/FeatureServer/26",
- /*           objectIdField: "OBJECTID",
-            fields: [
-              {
-                name: "OBJECTID",
-                alias: "ObjectID",
-                type: "oid"
-              },
-              {
-                name: "Country",
-                alias: "Country",
-                type: "string"
-              },
-              {
-                name: "y2015",
-                alias: "% forest area (2015)",
-                type: "double"
-              }
-            ],
+            outFields: ["*"],
             popupTemplate: {
-              title: "{Country}",
-              content: "{expression/per-land-area}",
-              expressionInfos: [
-                {
-                  title: "per-land-area",
-                  name: "per-land-area",
-                  expression:
-                    "IIF(!IsEmpty($feature.y2015), Round($feature.y2015) + '% of the land area in this country is forest.', 'No data')"
-                }
-              ]
-            },
-            renderer: {
-              type: "class-breaks",
-              defaultLabel: "No data",
-              defaultSymbol: {
-                type: "simple-fill",
-                color: "#F0F0F0",
-                outline: {
-                  color: [0,0,0, 0.1],
-                  width: 0.5
-                }
-              },
-              visualVariables: [
-                {
-                  type: "color",
-                  field: "y2015",
-                  stops: [
-                    { value: 0, color: "#D0D0CB" },
-                    { value: 50, color: "#4F6704" }
-                  ]
-                }
-              ]
-            } */
+              overwriteActions: "true",
+              title: "{COUNTRY}"
+            }
           });
           return countriesLayer;
         }
@@ -227,7 +180,6 @@
               spatialReference: SpatialReference.WGS84
             }
           });
-        
         /************************************************************
          * Show or hide the legend by uncommenting/commenting this line 
          ************************************************************/ 
@@ -250,12 +202,71 @@
             });
           });
         }
-
         /************************************************************
          * Executes if data retrieval was unsuccessful.
          ************************************************************/
         function errback(error) {
           console.error("something went wrong. ", error);
+        }
+        /************************************************************
+         * Prevents the user from opening the popup with click 
+         ************************************************************/  
+         function disablePopupOnClick(view) {
+          view.on("click", function(event) {
+            event.stopPropagation();
+          });
+          return view;
+        }
+        /************************************************************
+         * Enable mouse-over on desktop and tap on mobile 
+         ************************************************************/   
+        let highlight = null;
+        let lastHighlight = null;
+
+        function enableHighlightOnPointerMove(view) {
+          view.whenLayerView(layer1).then(function(layerView) {
+            view.on("pointer-move", function(event) {
+              view.hitTest(event).then(function(response) {
+
+                lastHighlight = highlight;
+
+                // if a feature is returned, highlight it
+                // and display its attributes in the popup
+                // if no features are returned, then close the popup
+                var id = null;
+
+                if (response.results.length) {
+                  var feature = response.results.filter(function(result) {
+                    return result.graphic.layer1 === layer1;
+                  })[0].graphic;
+
+                  feature.popupTemplate = layer.popupTemplate;
+                  id = feature.attributes.OBJECTID;
+                  highlight = layerView.highlight([id]);
+                  var selectionId = view.popup.selectedFeature
+                    ? view.popup.selectedFeature.attributes.OBJECTID
+                    : null;
+
+                  if (highlight && id !== selectionId) {
+                    view.popup.open({
+                      features: [feature]
+                    });
+                  }
+                } else {
+                  if (view.popup.visible) {
+                    view.popup.close();
+                    view.popup.clear();
+                  }
+                }
+
+                // remove the previous highlight
+                if (lastHighlight) {
+                  lastHighlight.remove();
+                  lastHighlight = null;
+                }
+              });
+            });
+          });
         }
       });
     </script>
