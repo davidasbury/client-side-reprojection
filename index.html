@@ -53,7 +53,7 @@
         reactiveUtils,
         Legend
       ) => {
-        let view, countriesLayer;
+        let view;
         /************************************************************
          * Create loader 
          ************************************************************/
@@ -106,9 +106,9 @@
          ************************************************************/ 
           function createLayer() {
           // display projected graphics as a FeatureLayer
-          countriesLayer = new FeatureLayer({
-            title: "World countries",
-            url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_tiny_squares/FeatureServer/26",
+          let countriesLayer = new FeatureLayer({
+            title: "Countries",
+            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_tiny_squares/FeatureServer/26",
  /*           objectIdField: "OBJECTID",
             fields: [
               {
@@ -228,10 +228,10 @@
             }
           });
         
-          /************************************************************
+        /************************************************************
          * Show or hide the legend by uncommenting/commenting this line 
          ************************************************************/ 
-//          view.ui.add(new Legend({ view: view, style: "card" }), "bottom-left"); //uncomment to show legend
+//          view.ui.add(new Legend({ view: view, style: "card" }), "bottom-left"); 
 
         /************************************************************
          * Enable projection dropdown and stop displaying loader once layer loads 
@@ -292,6 +292,7 @@
                             PARAMETER["False_Northing",0.0],
                             PARAMETER["Central_Meridian",11.5],
                             UNIT["Meter",1.0]]'
+                          myvalue='0' y='0' url="https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_tiny_squares/FeatureServer/26" 
                           selected>Equal Earth (Bering Strait)</option>
           <option value='PROJCS["WGS_1984_Equal_Earth_Americas",
                           GEOGCS["GCS_WGS_1984",
