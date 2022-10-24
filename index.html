@@ -30,6 +30,15 @@
         background: #ffffff;
         padding: 10px;
       }
+
+      #info {
+        background-color: white;
+        opacity: 0.75;
+        color: black;
+        font-size: 18pt;
+        padding: 8px;
+        visibility: hidden;
+      }
     </style>
 
     <link rel="stylesheet" href="https://js.arcgis.com/4.24/esri/themes/light/main.css" />
@@ -42,6 +51,8 @@
         "esri/geometry/SpatialReference",
         "esri/layers/GeoJSONLayer",
         "esri/layers/FeatureLayer",
+        "esri/layers/VectorTileLayer",
+        "esri/layers/TileLayer",
         "esri/core/reactiveUtils",
         "esri/widgets/Legend"
       ], (
@@ -50,6 +61,8 @@
         SpatialReference,
         GeoJSONLayer,
         FeatureLayer,
+        VectorTileLayer,
+        TileLayer,
         reactiveUtils,
         Legend
       ) => {
@@ -69,54 +82,122 @@
          * Function runs when dropdown is changed
          ************************************************************/ 
         const layer1 = createLayer();
-        layer1.load()
-          .then(function(layer1) {
+          layer1.load()
+            .then(function(layer1) {
+                  const layer2 = new FeatureLayer(
+                    {
+                      title:"Background countries",
+                      url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1",
+                      
+                    }
+                  );
+                  createView(layer1, layer2);
+                }
+              )
+            .catch(errback);
+          });
+         /************************************************************
+         * Function runs on first load
+         ************************************************************/ 
+        const layer1 = createLayer();
+          layer1.load()
+            .then(function(layer1) {
                 const layer2 = new FeatureLayer(
                   {
-                    title:"Background countries",
-                    url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1",
-                    
+                  title:"Background countries",
+                  url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1"
                   }
                 );
                 createView(layer1, layer2);
               }
             )
-            .catch(errback);
-        });
-         /************************************************************
-         * Function runs on first load
-         ************************************************************/ 
-        const layer1 = createLayer();
-        layer1.load()
-          .then(function(layer1) {
-              const layer2 = new FeatureLayer(
-                {
-                title:"Background countries",
-                url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1"
+                /************************************************************
+                 * Enable mouse-over on desktop and tap on mobile 
+                 ************************************************************/   
+/*          .then(function(enableHighlightOnPointerMove){
+                let highlight = null;
+                let lastHighlight = null;
 
+                function enableHighlightOnPointerMove(view) {
+                    view.whenLayerView(layer).then(function(layerView) {
+                    view.on("pointer-move", function(event) {
+                      view.hitTest(event).then(function(response) {
+
+                        lastHighlight = highlight;
+
+                        // if a feature is returned, highlight it
+                        // and display its attributes in the popup
+                        // if no features are returned, then close the popup
+                        var id = null;
+
+                        if (response.results.length) {
+                          var feature = response.results.filter(function(result) {
+                            return result.graphic.layer1 === layer1;
+                          })[0].graphic;
+
+                          feature.popupTemplate = layer1.popupTemplate;
+                          id = feature.attributes.OBJECTID;
+                          highlight = layerView.highlight([id]);
+                          var selectionId = view.popup.selectedFeature
+                            ? view.popup.selectedFeature.attributes.OBJECTID
+                            : null;
+
+                          if (highlight && id !== selectionId) {
+                            view.popup.open({
+                              features: [feature]
+                            });
+                          }
+                        } else {
+                          if (view.popup.visible) {
+                            view.popup.close();
+                            view.popup.clear();
+                          }
+                        }
+
+                        // remove the previous highlight
+                        if (lastHighlight) {
+                          lastHighlight.remove();
+                          lastHighlight = null;
+                        }
+                      });
+                    });
+          //       });
                 }
-              );
-              createView(layer1, layer2);
-            }
-          )
-          .catch(errback);
+          })*/
+            .catch(errback);
         
         /************************************************************
          * Create an operational layer
          ************************************************************/ 
-          function createLayer() {
-          // display projected graphics as a FeatureLayer
-          let countriesLayer = new FeatureLayer({
+        // create a VectorTile layer
+ /*         function createLayer() {
+            let countriesLayer = new VectorTileLayer({
+              title:"Countries",
+              portalItem: {  // autocasts as new PortalItem()
+                id: "aaa161005ee742b4bbcdfeb913ab41cc"
+              }
+            })*/
+         // create a raster TileLayer
+ /*        function createLayer(){
+          let countriesLayer = new TileLayer({
+            title:"Countries",
+            url:"https://tiles.arcgis.com/tiles/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_tiny_squares_raster_tiles/MapServer"
+          });
+          return countriesLayer;
+         } */
+         // create a FeatureLayer
+         function createLayer(){ 
+         let countriesLayer = new FeatureLayer({
             title: "Countries",
-            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_tiny_squares/FeatureServer/26",
+            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_diamonds_join/FeatureServer/6",
             outFields: ["*"],
             popupTemplate: {
               overwriteActions: "true",
               title: "{COUNTRY}"
             }
-          });
+          }); 
           return countriesLayer;
-        }
+         }
         /*************************************************************************
          * This function is called at first load and whenever the user selects a 
          * new projection from the projections drop down.
@@ -125,9 +206,9 @@
 
         function createView(layer1, layer2) {
         /************************************************************
-         * Creates a new spatial reference from the dropdown options
+         * Creates a spatial reference from the dropdown options
          ************************************************************/ 
-          const viewSpatialReference = new SpatialReference({
+         const viewSpatialReference = new SpatialReference({
             wkt: wktSelect.value    
           });
           let centerPoint = {
@@ -142,13 +223,15 @@
             view.map = null;
           }
         /************************************************************
-         * Creates a new MapView with a new map 
+         * Creates a MapView with a new map 
          *************************************************************/
-          view = new MapView({
+        view = new MapView({
             container: "viewDiv",
+            //creates a new Map
             map: new Map({
               layers: [layer2, layer1]
             }),
+            //configure the popup
             popup: {
               dockEnabled: true,
               dockOptions: {
@@ -157,6 +240,7 @@
                 position: "top-center"
               }
             },
+            //configure selection highlight
             highlightOptions: {
               color: "#282828",
               fillOpacity: 0
@@ -166,7 +250,7 @@
             scale: 166418924
           });
         /************************************************************
-         * Add a background graphic to display the map extent.
+         * Add a background graphic to display the outside edge of the graticule
          ************************************************************/
           view.graphics.add({
             symbol: {
@@ -194,7 +278,7 @@
 //          view.ui.add(new Legend({ view: view, style: "card" }), "bottom-left"); 
 
         /************************************************************
-         * Enable projection dropdown and stop displaying loader once layer loads 
+         * Enable projection dropdown and stop displaying loader once layers load properly 
          ************************************************************/        
          view.whenLayerView(layer1).then((layerView) => {
             reactiveUtils.when(
@@ -224,58 +308,7 @@
             event.stopPropagation();
           });
           return view;
-        }
-        /************************************************************
-         * Enable mouse-over on desktop and tap on mobile 
-         ************************************************************/   
-        let highlight = null;
-        let lastHighlight = null;
-
-        function enableHighlightOnPointerMove(view) {
-          view.whenLayerView(layer1).then(function(layerView) {
-            view.on("pointer-move", function(event) {
-              view.hitTest(event).then(function(response) {
-
-                lastHighlight = highlight;
-
-                // if a feature is returned, highlight it
-                // and display its attributes in the popup
-                // if no features are returned, then close the popup
-                var id = null;
-
-                if (response.results.length) {
-                  var feature = response.results.filter(function(result) {
-                    return result.graphic.layer1 === layer1;
-                  })[0].graphic;
-
-                  feature.popupTemplate = layer.popupTemplate;
-                  id = feature.attributes.OBJECTID;
-                  highlight = layerView.highlight([id]);
-                  var selectionId = view.popup.selectedFeature
-                    ? view.popup.selectedFeature.attributes.OBJECTID
-                    : null;
-
-                  if (highlight && id !== selectionId) {
-                    view.popup.open({
-                      features: [feature]
-                    });
-                  }
-                } else {
-                  if (view.popup.visible) {
-                    view.popup.close();
-                    view.popup.clear();
-                  }
-                }
-
-                // remove the previous highlight
-                if (lastHighlight) {
-                  lastHighlight.remove();
-                  lastHighlight = null;
-                }
-              });
-            });
-          });
-        }
+        } 
       });
     </script>
   </head>
@@ -288,6 +321,20 @@
       <div id="projectionDiv" class="esri-widget">
         <p>Select a projection</p>
         <select id="projectWKT" class="esri-widget" disabled>
+          <option value ='PROJCS["WGS_1984_Web_Mercator_Auxiliary_Sphere",
+                            GEOGCS["GCS_WGS_1984",
+                              DATUM["D_WGS_1984",S
+                                PHEROID["WGS_1984",6378137.0,298.257223563]],
+                              PRIMEM["Greenwich",0.0],
+                              UNIT["Degree",0.0174532925199433]],
+                            PROJECTION["Mercator_Auxiliary_Sphere"],
+                            PARAMETER["False_Easting",0.0],
+                            PARAMETER["False_Northing",0.0],
+                            PARAMETER["Central_Meridian",0.0],
+                            PARAMETER["Standard_Parallel_1",0.0],
+                            PARAMETER["Auxiliary_Sphere_Type",0.0],
+                            UNIT["Meter",1.0]]'
+                            >Web Mercator</option>
           <option value='PROJCS["WGS_1984_Equal_Earth_Greenwich",
                           GEOGCS["GCS_WGS_1984",
                             DATUM["D_WGS_1984",
