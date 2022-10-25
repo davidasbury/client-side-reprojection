@@ -66,6 +66,12 @@
         reactiveUtils,
         Legend
       ) => {
+
+        const projectionLookUpTable = {
+          "Web Mercator": {projectionString: "Hello World 1", url: "https://your_url_here_1"},
+          "World Polyconic": {projectionString: "Hello World 2", url: "https://your_url_here_2"}
+        }
+
         let view;
         /************************************************************
          * Create loader 
@@ -78,6 +84,8 @@
 
         wktSelect.addEventListener("change", () => {
           loadingDiv.style.display = "inline";
+          const selectedOption = [...document.getElementsByTagName("option")].filter((option)=>option.selected === true).shift();
+          console.log(projectionLookUpTable[selectedOption.innerHTML])
         /************************************************************
          * Function runs when dropdown is changed
          ************************************************************/ 
