@@ -111,9 +111,9 @@
                 createView(layer1, layer2);
               }
             )
-                /************************************************************
-                 * Enable mouse-over on desktop and tap on mobile 
-                 ************************************************************/   
+            /************************************************************
+             * Enable mouse-over on desktop and tap on mobile 
+            ************************************************************/   
 /*          .then(function(enableHighlightOnPointerMove){
                 let highlight = null;
                 let lastHighlight = null;
@@ -169,10 +169,18 @@
         /************************************************************
          * Create an operational layer
          ************************************************************/ 
+        // create a GeoJSON Layer
+/*          function createLayer(){
+              let countriesLayer = new GeoJSONLayer({
+                title:"GeoJSON Countries",
+                url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/ArcGIS/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_geojson/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson"
+              });
+            return countriesLayer;
+            }*/
         // create a VectorTile layer
  /*         function createLayer() {
             let countriesLayer = new VectorTileLayer({
-              title:"Countries",
+              title:"VectorTile Countries",
               portalItem: {  // autocasts as new PortalItem()
                 id: "aaa161005ee742b4bbcdfeb913ab41cc"
               }
@@ -180,22 +188,23 @@
          // create a raster TileLayer
  /*        function createLayer(){
           let countriesLayer = new TileLayer({
-            title:"Countries",
+            title:"RasterTile Countries",
             url:"https://tiles.arcgis.com/tiles/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_tiny_squares_raster_tiles/MapServer"
           });
           return countriesLayer;
          } */
          // create a FeatureLayer
+         console.log("MyURL =",wktSelect.url);
          function createLayer(){ 
-         let countriesLayer = new FeatureLayer({
-            title: "Countries",
-            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_diamonds_join/FeatureServer/6",
-            outFields: ["*"],
-            popupTemplate: {
-              overwriteActions: "true",
-              title: "{COUNTRY}"
-            }
-          }); 
+          let countriesLayer = new FeatureLayer({
+              title: "FeatureLayer Countries",
+              url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26",
+              outFields: ["*"],
+              popupTemplate: {
+                overwriteActions: "true",
+                title: "{COUNTRY}"
+              }
+            }); 
           return countriesLayer;
          }
         /*************************************************************************
