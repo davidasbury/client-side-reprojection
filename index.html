@@ -170,13 +170,29 @@
          * Create an operational layer
          ************************************************************/ 
         // create a GeoJSON Layer
-/*          function createLayer(){
+          function createLayer(){
               let countriesLayer = new GeoJSONLayer({
                 title:"GeoJSON Countries",
-                url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/ArcGIS/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_geojson/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson"
+                url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/ArcGIS/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
+                outFields: ["*"],
+                popupTemplate: {
+                  overwriteActions: "true",
+                  title: "{COUNTRY}"
+                },
+                renderer: {
+                  type: "simple", // autocasts as new SimpleRenderer()
+                  symbol: {
+                    type: "simple-fill", // autocasts as new SimpleFillSymbol()
+                    color: [240, 240, 240, 0.5],
+                    outline: {
+                      color: [150, 150, 150, 0.7],
+                      width: 0.5
+                    }
+                 }
+                }
               });
             return countriesLayer;
-            }*/
+            }
         // create a VectorTile layer
  /*         function createLayer() {
             let countriesLayer = new VectorTileLayer({
@@ -194,7 +210,7 @@
           return countriesLayer;
          } */
          // create a FeatureLayer
-         console.log("MyURL =",wktSelect.url);
+ /*        console.log("MyURL =",wktSelect.url);
          function createLayer(){ 
           let countriesLayer = new FeatureLayer({
               title: "FeatureLayer Countries",
@@ -206,7 +222,7 @@
               }
             }); 
           return countriesLayer;
-         }
+         }*/
         /*************************************************************************
          * This function is called at first load and whenever the user selects a 
          * new projection from the projections drop down.
