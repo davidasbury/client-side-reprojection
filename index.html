@@ -78,13 +78,14 @@
 
         wktSelect.addEventListener("change", () => {
           loadingDiv.style.display = "inline";
-         /************************************************************
+        /************************************************************
          * Function runs when dropdown is changed
          ************************************************************/ 
         const layer1 = createLayer();
           layer1.load()
             .then(function(layer1) {
-                  const layer2 = new FeatureLayer(
+              // create a background layer    
+              const layer2 = new FeatureLayer(
                     {
                       title:"Background countries",
                       url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1",
@@ -96,20 +97,21 @@
               )
             .catch(errback);
           });
-         /************************************************************
-         * Function runs on first load
+        /************************************************************
+        * Function runs on first load
          ************************************************************/ 
         const layer1 = createLayer();
           layer1.load()
             .then(function(layer1) {
-                const layer2 = new FeatureLayer(
+              // create a background layer  
+              const layer2 = new FeatureLayer(
                   {
                   title:"Background countries",
                   url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1"
                   }
                 );
                 createView(layer1, layer2);
-              }
+            }
             )
             /************************************************************
              * Enable mouse-over on desktop and tap on mobile 
@@ -169,7 +171,7 @@
         /************************************************************
          * Create an operational layer
          ************************************************************/ 
-        // create a GeoJSON Layer
+        // create a GeoJSON Layer from a Feature Service
           function createLayer(){
               let countriesLayer = new GeoJSONLayer({
                 title:"GeoJSON Countries",
@@ -197,12 +199,15 @@
  /*         function createLayer() {
             let countriesLayer = new VectorTileLayer({
               title:"VectorTile Countries",
-              portalItem: {  // autocasts as new PortalItem()
-                id: "aaa161005ee742b4bbcdfeb913ab41cc"
-              }
-            })*/
+              url:"https://jsapi.maps.arcgis.com/sharing/rest/content/items/75f4dfdff19e445395653121a95a85db/resources/styles/root.json"
+//              portalItem: {  // autocasts as new PortalItem()
+//                id: "22b18b8bda79476a8c2e76080381635a"
+//              }
+            });
+            return countriesLayer;
+          }*/
          // create a raster TileLayer
- /*        function createLayer(){
+/*         function createLayer(){
           let countriesLayer = new TileLayer({
             title:"RasterTile Countries",
             url:"https://tiles.arcgis.com/tiles/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_tiny_squares_raster_tiles/MapServer"
@@ -254,7 +259,7 @@
             container: "viewDiv",
             //creates a new Map
             map: new Map({
-              layers: [layer2, layer1]
+              layers: [layer2,layer1]
             }),
             //configure the popup
             popup: {
