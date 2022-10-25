@@ -195,6 +195,30 @@
               });
             return countriesLayer;
             }
+        // create a GeoJSON Layer from a online file (hosted on Github)
+/*            function createLayer(){
+              let countriesLayer = new GeoJSONLayer({
+                title:"GeoJSON Countries",
+                url:"https://raw.githubusercontent.com/davidasbury/client-side-reprojection/master/World_Countries_Generalized_with_tiny_countries_as_squares.geojson",
+                outFields: ["*"],
+                popupTemplate: {
+                  overwriteActions: "true",
+                  title: "{COUNTRY}"
+                },
+                renderer: {
+                  type: "simple", // autocasts as new SimpleRenderer()
+                  symbol: {
+                    type: "simple-fill", // autocasts as new SimpleFillSymbol()
+                    color: [240, 240, 240, 0.5],
+                    outline: {
+                      color: [150, 150, 150, 0.7],
+                      width: 0.5
+                    }
+                 }
+                }
+              });
+            return countriesLayer;
+            }*/
         // create a VectorTile layer
  /*         function createLayer() {
             let countriesLayer = new VectorTileLayer({
