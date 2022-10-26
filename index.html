@@ -85,16 +85,13 @@
           layer1.load()
             .then(function(layer1) {
               // create a background layer    
-              const layer2 = new FeatureLayer(
-                    {
+              const layer2 = new FeatureLayer({
                       title:"Background countries",
                       url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1",
                       
-                    }
-                  );
-                  createView(layer1, layer2);
-                }
-              )
+              });
+              createView(layer1, layer2);
+            })
             .catch(errback);
           });
         /************************************************************
@@ -104,15 +101,12 @@
           layer1.load()
             .then(function(layer1) {
               // create a background layer  
-              const layer2 = new FeatureLayer(
-                  {
+              const layer2 = new FeatureLayer({
                   title:"Background countries",
                   url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1"
-                  }
-                );
-                createView(layer1, layer2);
-            }
-            )
+              });
+              createView(layer1, layer2);
+            })
             /************************************************************
              * Enable mouse-over on desktop and tap on mobile 
             ************************************************************/   
@@ -258,7 +252,7 @@
          * New view and map is created with the spatial reference that user chose.
          *************************************************************************/
 
-        function createView(layer1, layer2) {
+        function createView(layer1,layer2) {
         /************************************************************
          * Creates a spatial reference from the dropdown options
          ************************************************************/ 
