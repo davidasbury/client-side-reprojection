@@ -93,9 +93,20 @@
           layer1.load()
             .then(function(layer1) {
               // create a background layer    
-              const layer2 = new FeatureLayer({
+              const layer2 = new GeoJSONLayer({
                       title:"Background countries",
-                      url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1",
+                      url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
+                      renderer: {
+                        type: "simple", // autocasts as new SimpleRenderer()
+                        symbol: {
+                          type: "simple-fill", // autocasts as new SimpleFillSymbol()
+                          color: [240, 240, 240, 0.5],
+                          outline: {
+                            color: [150, 150, 150, 0.7],
+                            width: 0
+                          }
+                       }
+                      }
                       
               });
               createView(layer1, layer2);
@@ -109,9 +120,20 @@
           layer1.load()
             .then(function(layer1) {
               // create a background layer  
-              const layer2 = new FeatureLayer({
+              const layer2 = new GeoJSONLayer({
                   title:"Background countries",
-                  url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1"
+                  url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_background/FeatureServer/1/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
+                  renderer: {
+                    type: "simple", // autocasts as new SimpleRenderer()
+                    symbol: {
+                      type: "simple-fill", // autocasts as new SimpleFillSymbol()
+                      color: [240, 240, 240, 0.5],
+                      outline: {
+                        color: [150, 150, 150, 0.7],
+                        width: 0
+                      }
+                    }
+                  }
               });
               createView(layer1, layer2);
             })
