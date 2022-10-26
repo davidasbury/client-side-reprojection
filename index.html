@@ -41,33 +41,22 @@
       }
     </style>
 
-    <link rel="stylesheet" href="https://js.arcgis.com/4.24/esri/themes/light/main.css" />
+    <link rel="stylesheet" href="https://js.arcgis.com/4.24/@arcgis/core/assets/esri/themes/light/main.css" />
     <script src="https://js.arcgis.com/4.24/"></script>
     <script type="module" src=https://js.arcgis.com/calcite-components/1.0.0-beta.95/calcite.esm.js></script>
     <link rel="stylesheet" type="text/css" href=https://js.arcgis.com/calcite-components/1.0.0-beta.95/calcite.css />
 
-    <script>
-      require([
-        "esri/views/MapView",
-        "esri/Map",
-        "esri/geometry/SpatialReference",
-        "esri/layers/GeoJSONLayer",
-        "esri/layers/FeatureLayer",
-        "esri/layers/VectorTileLayer",
-        "esri/layers/TileLayer",
-        "esri/core/reactiveUtils",
-        "esri/widgets/Legend"
-      ], (
-        MapView,
-        Map,
-        SpatialReference,
-        GeoJSONLayer,
-        FeatureLayer,
-        VectorTileLayer,
-        TileLayer,
-        reactiveUtils,
-        Legend
-      ) => {
+    <script type="module">
+      import MapView from 'https://js.arcgis.com/4.24/@arcgis/core/views/MapView.js';
+      import Map from 'https://js.arcgis.com/4.24/@arcgis/core/Map.js';
+      import SpatialReference from 'https://js.arcgis.com/4.24/@arcgis/core/geometry/SpatialReference.js';
+      import GeoJSONLayer from 'https://js.arcgis.com/4.24/@arcgis/core/layers/GeoJSONLayer.js';
+      import FeatureLayer from 'https://js.arcgis.com/4.24/@arcgis/core/layers/FeatureLayer.js';
+      import VectorTileLayer from 'https://js.arcgis.com/4.24/@arcgis/core/layers/VectorTileLayer.js';
+      import TileLayer from 'https://js.arcgis.com/4.24/@arcgis/core/layers/TileLayer.js';
+      import * as reactiveUtils from 'https://js.arcgis.com/4.24/@arcgis/core/core/reactiveUtils.js';
+      import Legend from 'https://js.arcgis.com/4.24/@arcgis/core/widgets/Legend.js';
+
         /************************************************************
          * Parameter table for each map view
          ************************************************************/
@@ -385,7 +374,7 @@
           });
           return view;
         } 
-      });
+     
     </script>
   </head>
 
@@ -395,7 +384,7 @@
         <calcite-loader active type="indeterminate"></calcite-loader>
       </div>
       <div id="projectionDiv" class="esri-widget">
-        <p>Select a projection</p>
+        <p>Select a map view</p>
         <select id="projectWKT" class="esri-widget" disabled>
           <option value ='PROJCS["WGS_1984_Web_Mercator_Auxiliary_Sphere",
                             GEOGCS["GCS_WGS_1984",
