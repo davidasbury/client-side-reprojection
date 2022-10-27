@@ -63,61 +63,61 @@
         const projectionLookUpTable = {
           "Web Mercator": {
             projectionString:"WKT1", 
-            url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26",
+            url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"166418924",
             filter:"TBD"
           },
           "World (Greenwich)": {
             projectionString: "WKT2", 
-            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26",
+            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"166418924",
             filter:"TBD"
           },
           "World (Bering Strait)": {
             projectionString: "WKT3", 
-            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26",
+            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"166418924",
             filter:"TBD"
           },
           "Africa": {
             projectionString:"Hello World 4", 
-            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Africa/FeatureServer/1",
+            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Africa/FeatureServer/1/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"36978595",
             filter:"TBD"
           },
           "South America": {
             projectionString:"Hello World 5", 
-            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_SouthAmerica/FeatureServer/0",
+            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_SouthAmerica/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"36978595",
             filter:"TBD"
           },
           "Asia": {
             projectionString:"Hello World 6", 
-            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Asia_with_tiny_countries/FeatureServer/0",
+            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Asia_with_tiny_countries/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"36978595",
             filter:"TBD"
           },
           "Europe":  {
             projectionString:"Hello World 7", 
-            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Europe_with_tiny_countries/FeatureServer/4",
+            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Europe_with_tiny_countries/FeatureServer/4/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"18489298",
             filter:"TBD"
           },
           "North America":  {
             projectionString:"Hello World 8", 
-            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_NorthAmerica_tiny_countries/FeatureServer/7",
+            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_NorthAmerica_tiny_countries/FeatureServer/7/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"36978595",
             filter:"TBD"
           },
           "Austrailasia":  {
             projectionString:"Hello World 9", 
-            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Australasia_with_tiny_countries/FeatureServer/0",
-            scale:"18489298",
+            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Australasia_with_tiny_countries/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
+            scale:"36978595",
             filter:"TBD"
           },
           "World Polyconic":  {
             projectionString:"I'm Lee's favorite", 
-            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26",
+            url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"166418924",
             filter:"TBD"
           },
@@ -143,11 +143,16 @@
         wktSelect.addEventListener("change", () => {
           loadingDiv.style.display = "inline";
           const selectedOption = [...document.getElementsByTagName("option")].filter((option)=>option.selected === true).shift();
-          console.log(projectionLookUpTable[selectedOption.innerHTML])
+        /************************************************************
+         * Get variables from lookup table
+         ************************************************************/
+          const countriesLayerURL = projectionLookUpTable[selectedOption.innerHTML].url
+          const viewScale = projectionLookUpTable[selectedOption.innerHTML].scale
+          console.log(viewScale)
         /************************************************************
          * Function runs when dropdown is changed
          ************************************************************/ 
-        const layer1 = createLayer();
+        const layer1 = createLayer(countriesLayerURL);
           layer1.load()
             .then(function(layer1) {
               // create a background layer    
@@ -167,14 +172,18 @@
                       }
                       
               });
-              createView(layer1, layer2);
+              createView(layer1, layer2, viewScale);
             })
             .catch(errback);
           });
-        /************************************************************
+          const selectedOption = [...document.getElementsByTagName("option")].filter((option)=>option.selected === true).shift();
+          const countriesLayerURL = projectionLookUpTable[selectedOption.innerHTML].url
+          const viewScale = projectionLookUpTable[selectedOption.innerHTML].scale
+          console.log(viewScale)
+          /************************************************************
         * Function runs on first load
          ************************************************************/ 
-        const layer1 = createLayer();
+        const layer1 = createLayer(countriesLayerURL);
           layer1.load()
             .then(function(layer1) {
               // create a background layer  
@@ -193,7 +202,7 @@
                     }
                   }
               });
-              createView(layer1, layer2);
+              createView(layer1, layer2, viewScale);
             })
             .catch(errback);
         
@@ -201,14 +210,14 @@
          * Create an operational layer
          ************************************************************/ 
         // create a GeoJSON Layer from a Feature Service
-/*          function createLayer(){
+          function createLayer(countriesLayerURL){
               let countriesLayer = new GeoJSONLayer({
                 title:"GeoJSON Countries",
-                url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/ArcGIS/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
+                url: countriesLayerURL,
                 outFields: ["*"],
                 popupTemplate: {
                   overwriteActions: "true",
-                  title: "{COUNTRY}"
+                  title: "{NAME}"
                 },
                 renderer: {
                   type: "simple", // autocasts as new SimpleRenderer()
@@ -223,7 +232,7 @@
                 }
               });
             return countriesLayer;
-            }*/
+            }
         // create a GeoJSON Layer from a online file (hosted on Github)
 /*            function createLayer(){
               let countriesLayer = new GeoJSONLayer({
@@ -268,25 +277,25 @@
           return countriesLayer;
          } */
          // create a FeatureLayer
-         function createLayer(){ 
+/*         function createLayer(countriesLayerURL){ 
           let countriesLayer = new FeatureLayer({
               title: "FeatureLayer Countries",
-              url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26",
+              url: countriesLayerURL,
               outFields: ["*"],
               popupTemplate: {
                 overwriteActions: "true",
-                title: "{COUNTRY}"
+                title: "{NAME}"
               }
             }); 
           return countriesLayer;
-         }
+         }*/
         /*************************************************************************
          * This function is called at first load and whenever the user selects a 
          * new projection from the projections drop down.
          * New view and map is created with the spatial reference that user chose.
          *************************************************************************/
 
-        function createView(layer1,layer2) {
+        function createView(layer1,layer2,viewScale) {
         /************************************************************
          * Creates a spatial reference from the dropdown options
          ************************************************************/ 
@@ -329,7 +338,7 @@
             },
             spatialReference: viewSpatialReference,
             center: centerPoint,
-            scale: 166418924
+            scale: viewScale
           });
         /************************************************************
          * Add a background graphic to display the outside edge of the graticule
@@ -541,8 +550,8 @@
                           PROJECTION["Lambert_Azimuthal_Equal_Area"],
                           PARAMETER["False_Easting",0.0],
                           PARAMETER["False_Northing",0.0],
-                          PARAMETER["Central_Meridian",10.0],
-                          PARAMETER["Latitude_Of_Origin",30.0],
+                          PARAMETER["Central_Meridian",0.0],
+                          PARAMETER["Latitude_Of_Origin",40.0],
                           UNIT["Meter",1.0]]'
                           >Spain</option>                 
         </select>
