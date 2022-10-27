@@ -65,60 +65,80 @@
             projectionString:"WKT1", 
             url:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"166418924",
+            centerX:"0",
+            centerY:"0",
             filter:"TBD"
           },
           "World (Greenwich)": {
             projectionString: "WKT2", 
             url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"166418924",
+            centerX:"0",
+            centerY:"0",
             filter:"TBD"
           },
           "World (Bering Strait)": {
             projectionString: "WKT3", 
             url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"166418924",
+            centerX:"0",
+            centerY:"0",
             filter:"TBD"
           },
           "Africa": {
             projectionString:"Hello World 4", 
             url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Africa/FeatureServer/1/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"36978595",
+            centerX:"0",
+            centerY:"0",
             filter:"TBD"
           },
           "South America": {
             projectionString:"Hello World 5", 
             url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_SouthAmerica/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"36978595",
+            centerX:"0",
+            centerY:"0",
             filter:"TBD"
           },
           "Asia": {
             projectionString:"Hello World 6", 
             url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Asia_with_tiny_countries/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
-            scale:"36978595",
+            scale:"55467893",
+            centerX:"-500000",
+            centerY:"0",
             filter:"TBD"
           },
           "Europe":  {
             projectionString:"Hello World 7", 
             url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Europe_with_tiny_countries/FeatureServer/4/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"18489298",
+            centerX:"500000",
+            centerY:"2500000",
             filter:"TBD"
           },
           "North America":  {
             projectionString:"Hello World 8", 
             url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_NorthAmerica_tiny_countries/FeatureServer/7/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"36978595",
+            centerX:"0",
+            centerY:"0",
             filter:"TBD"
           },
           "Austrailasia":  {
             projectionString:"Hello World 9", 
             url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Australasia_with_tiny_countries/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"36978595",
+            centerX:"0",
+            centerY:"0",
             filter:"TBD"
           },
           "World Polyconic":  {
             projectionString:"I'm Lee's favorite", 
             url: "https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"166418924",
+            centerX:"0",
+            centerY:"0",
             filter:"TBD"
           },
           "Spain":  {
@@ -126,6 +146,8 @@
             layerType:"GeoJSON", 
             url: "https://demographics1.arcgis.com/arcgis/rest/services/ESP_Demographics_and_Boundaries/MapServer/12/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"4622324",
+            centerX:"-300000",
+            centerY:"0",
             filter:"TBD"
           }
         }
@@ -148,7 +170,9 @@
          ************************************************************/
           const countriesLayerURL = projectionLookUpTable[selectedOption.innerHTML].url
           const viewScale = projectionLookUpTable[selectedOption.innerHTML].scale
-          console.log(viewScale)
+          const centerX = projectionLookUpTable[selectedOption.innerHTML].centerX
+          const centerY = projectionLookUpTable[selectedOption.innerHTML].centerY
+//          console.log(viewScale)
         /************************************************************
          * Function runs when dropdown is changed
          ************************************************************/ 
@@ -172,15 +196,16 @@
                       }
                       
               });
-              createView(layer1, layer2, viewScale);
+              createView(layer1,layer2,viewScale,centerX,centerY);
             })
             .catch(errback);
           });
           const selectedOption = [...document.getElementsByTagName("option")].filter((option)=>option.selected === true).shift();
           const countriesLayerURL = projectionLookUpTable[selectedOption.innerHTML].url
           const viewScale = projectionLookUpTable[selectedOption.innerHTML].scale
-          console.log(viewScale)
-          /************************************************************
+          const centerX = projectionLookUpTable[selectedOption.innerHTML].centerX
+          const centerY = projectionLookUpTable[selectedOption.innerHTML].centerY
+        /************************************************************
         * Function runs on first load
          ************************************************************/ 
         const layer1 = createLayer(countriesLayerURL);
@@ -202,7 +227,7 @@
                     }
                   }
               });
-              createView(layer1, layer2, viewScale);
+              createView(layer1,layer2,viewScale,centerX,centerY);
             })
             .catch(errback);
         
@@ -295,7 +320,7 @@
          * New view and map is created with the spatial reference that user chose.
          *************************************************************************/
 
-        function createView(layer1,layer2,viewScale) {
+        function createView(layer1,layer2,viewScale,centerX,centerY) {
         /************************************************************
          * Creates a spatial reference from the dropdown options
          ************************************************************/ 
@@ -303,11 +328,11 @@
             wkt: wktSelect.value    
           });
           let centerPoint = {
-            x: 0,
-            y: 0,
+            x: +centerX,
+            y: +centerY,
             spatialReference: viewSpatialReference
           };
-
+console.log(centerPoint);
           if (view) {
             view.map.removeAll();
             view.container = null;
@@ -340,6 +365,7 @@
             center: centerPoint,
             scale: viewScale
           });
+          console.log(centerPoint);
         /************************************************************
          * Add a background graphic to display the outside edge of the graticule
          ************************************************************/
