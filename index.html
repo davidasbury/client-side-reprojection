@@ -60,7 +60,8 @@
         /************************************************************
          * Parameter table for each map view
          ************************************************************/
-        const projectionLookUpTable = {
+        let countryCode = "ESP"
+         const projectionLookUpTable = {
           "Web Mercator": {
             projectionString:"WKT1", 
             url1:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
@@ -154,7 +155,7 @@
           "Spain":  {
             projectionString:"Research needed",
             layerType:"GeoJSON", 
-            url1: "https://demographics1.arcgis.com/arcgis/rest/services/ESP_Demographics_and_Boundaries/MapServer/12/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
+            url1: "https://demographics1.arcgis.com/arcgis/rest/services/" + countryCode + "_Demographics_and_Boundaries/MapServer/12/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             url2:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"4622324",
             centerX:"-300000",
