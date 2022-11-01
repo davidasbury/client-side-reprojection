@@ -103,7 +103,7 @@
             url1:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Africa/FeatureServer/1/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             url2:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"36978595",
-            centerX:"0",
+            centerX:"-900000",
             centerY:"0",
             filter:"TBD"
           },
@@ -374,7 +374,7 @@
             y: +centerY,
             spatialReference: viewSpatialReference
           };
-//console.log(centerPoint);
+console.log(centerPoint);
           if (view) {
             view.map.removeAll();
             view.container = null;
