@@ -125,6 +125,15 @@
             centerY:"1150000",
             filter:"TBD"
           },
+          "South America (WKID 102033)": {
+            projectionString:"Hello World 5", 
+            url1:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_SouthAmerica/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
+            url2:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
+            scale:"36978595",
+            centerX:"0",
+            centerY:"1150000",
+            filter:"TBD"
+          },
           "Asia": {
             projectionString:"Hello World 6", 
             url1:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Asia_with_tiny_countries/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
@@ -574,6 +583,21 @@ console.log(centerPoint);
                           PARAMETER["Latitude_Of_Origin",-32.0],
                           UNIT["Meter",1.0]]'
                           >South America (Albers)</option>
+         <option value='PROJCS["South_America_Albers_Equal_Area_Conic",
+                          GEOGCS["GCS_South_American_1969",
+                          DATUM["D_South_American_1969",
+                              SPHEROID["GRS_1967_Truncated",6378160.0,298.25]],
+                          PRIMEM["Greenwich",0.0],
+                          UNIT["Degree",0.0174532925199433]],
+                          PROJECTION["Albers"],
+                          PARAMETER["False_Easting",0.0],
+                          PARAMETER["False_Northing",0.0],
+                          PARAMETER["Central_Meridian",-60.0],
+                          PARAMETER["Standard_Parallel_1",-5.0],
+                          PARAMETER["Standard_Parallel_2",-42.0],
+                          PARAMETER["Latitude_Of_Origin",-32.0],
+                          UNIT["Meter",1.0]]'
+                          >South America (WKID 102033)</option>
          <option value='PROJCS["Lambert Azimuthal Equal Area (Asia)",
                           GEOGCS["GCS_WGS_1984",
                             DATUM["D_WGS_1984",
