@@ -134,7 +134,7 @@
             centerY:"1150000",
             filter:"TBD"
           },
-          "Asia": {
+          "Asia (two layers)": {
             projectionString:"Hello World 6", 
             url1:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Asia_with_tiny_countries/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             url2:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26/query?where=Tiny_Country%3D0&outFields=*&returnGeometry=true&f=geojson",
@@ -143,10 +143,28 @@
             centerY:"0",
             filter:"TBD"
           },
-          "Europe":  {
+          "Asia (one layer)": {
+            projectionString:"Hello World 6", 
+            url1:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Asia_with_tiny_countries/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
+            url2:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Asia_with_tiny_countries/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
+            scale:"55467893",
+            centerX:"-500000",
+            centerY:"0",
+            filter:"TBD"
+          },
+          "Europe (two layers)":  {
             projectionString:"Hello World 7", 
             url1:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Europe_with_tiny_countries/FeatureServer/4/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             url2:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/World_Countries_Generalized_with_tiny_countries_as_squares_join/FeatureServer/26/query?where=Tiny_Country%3D0&outFields=*&returnGeometry=true&f=geojson",
+            scale:"18489298",
+            centerX:"500000",
+            centerY:"2500000",
+            filter:"TBD"
+          },
+          "Europe (one layer)":  {
+            projectionString:"Hello World 7", 
+            url1:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Europe_with_tiny_countries/FeatureServer/4/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
+            url2:"https://services.arcgis.com/nzS0F0zdNLvs7nc8/arcgis/rest/services/ne_50m_admin_0_countries_Europe_with_tiny_countries/FeatureServer/4/query?where=1%3D1&outFields=*&returnGeometry=true&f=geojson",
             scale:"18489298",
             centerX:"500000",
             centerY:"2500000",
@@ -610,7 +628,33 @@ console.log(centerPoint);
                           PARAMETER["Central_Meridian",105.0],
                           PARAMETER["Latitude_Of_Origin",39.0],
                           UNIT["Meter",1.0]]'
-                          >Asia</option>                         
+                          >Asia (two layers)</option>
+         <option value='PROJCS["Lambert Azimuthal Equal Area (Asia)",
+                          GEOGCS["GCS_WGS_1984",
+                            DATUM["D_WGS_1984",
+                              SPHEROID["WGS_1984",6378137.0,298.257223563]],
+                            PRIMEM["Greenwich",0.0],
+                            UNIT["Degree",0.0174532925199433]],
+                          PROJECTION["Lambert_Azimuthal_Equal_Area"],
+                          PARAMETER["False_Easting",0.0],
+                          PARAMETER["False_Northing",0.0],
+                          PARAMETER["Central_Meridian",105.0],
+                          PARAMETER["Latitude_Of_Origin",39.0],
+                          UNIT["Meter",1.0]]'
+                          >Asia (one layer)</option>
+         <option value='PROJCS["Lambert Azimuthal Equal Area (Europe)",
+                          GEOGCS["GCS_WGS_1984",
+                            DATUM["D_WGS_1984",
+                              SPHEROID["WGS_1984",6378137.0,298.257223563]],
+                            PRIMEM["Greenwich",0.0],
+                            UNIT["Degree",0.0174532925199433]],
+                          PROJECTION["Lambert_Azimuthal_Equal_Area"],
+                          PARAMETER["False_Easting",0.0],
+                          PARAMETER["False_Northing",0.0],
+                          PARAMETER["Central_Meridian",10.0],
+                          PARAMETER["Latitude_Of_Origin",30.0],
+                          UNIT["Meter",1.0]]'
+                           >Europe (two layers)</option>                         
           <option value='PROJCS["Lambert Azimuthal Equal Area (Europe)",
                           GEOGCS["GCS_WGS_1984",
                             DATUM["D_WGS_1984",
@@ -623,7 +667,7 @@ console.log(centerPoint);
                           PARAMETER["Central_Meridian",10.0],
                           PARAMETER["Latitude_Of_Origin",30.0],
                           UNIT["Meter",1.0]]'
-                           >Europe</option>
+                           >Europe (one layer)</option>
          <option value='PROJCS["Lambert Azimuthal Equal Area (North America)",
                            GEOGCS["GCS_WGS_1984",
                              DATUM["D_WGS_1984",
